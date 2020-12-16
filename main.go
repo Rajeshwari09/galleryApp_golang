@@ -1,16 +1,43 @@
 package main
 
 import (
-	"fmt"
+
+	"galleryApp_golang/view"
 	"net/http"
+	"text/template"
+
+	"github.com/gorilla/mux"
 )
 
-func handlerFunvc(w http.ResponseWriter,r *http.Request)  {
-	fmt.Fprint(w,"<h1>welcome</h1>")
+var (
+	homeView    *view.View
+	contactView *view.View
+)
+
+func home(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-Type", "text/html")
+	if err := homeView.Template.Execute(w, nil); err != nil {
+		panic(err)
+	}
 }
 
-func main()  {
-	http.HandleFunc("/",handlerFunvc)
-	http.ListenAndServe(":3000",nil)
+func contact(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-Type", "text/html")
+	if err := contactView.Template.Execute(w, nil); err != nil {
+		panic(err)
+	}
+}
+
+func main() {
+
+	homeView= view.NewView("view/home.gohtml")
+	contactView = view.NewView("view/contact.gohtml")
+
+
+	template.New(" hahaha")
+	r := mux.NewRouter()
+	r.HandleFunc("/", home)
+	r.HandleFunc("/contact", contact)
+	http.ListenAndServe(":3000", r)
 
 }
