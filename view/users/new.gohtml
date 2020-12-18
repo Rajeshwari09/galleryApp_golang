@@ -1,5 +1,19 @@
 {{define  "yield"}}
-    <form>
+
+    <div class = "panel panel-primary">
+        <div class = "panel-heading">
+            <h3 class = "panel-title">SIGNUP</h3>
+        </div>
+
+        <div class = "panel-body">
+            {{template "signup"}}
+        </div>
+    </div>
+
+{{end}}
+
+    {{define "signup"}}
+    <form action="/signup" method="POST">
         <div class="form-group">
             <label for="email1">Email address</label>
             <input type="email"  name ="email" class="form-control" id="email1" placeholder="Email">
@@ -11,7 +25,7 @@
 
 
         <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-        <button type="button" class="btn btn-primary">Primary</button>
+        <button type="submit" class="btn btn-primary">sign up</button>
     </form>
 
 

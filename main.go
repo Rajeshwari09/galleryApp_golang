@@ -1,51 +1,30 @@
 package main
 
 import (
-
-	"galleryApp_golang/view"
-	"net/http"
-	"text/template"
-
+	"galleryApp_golang/controller"
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
-var (
-	homeView    *view.View
-	contactView *view.View
-	signupView  *view.View
-)
 
-func home(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-Type", "text/html")
-	if err := homeView.Template.ExecuteTemplate(w,homeView.Layout, nil); err != nil {
-		panic(err)
-	}
-}
-
-func contact(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-Type", "text/html")
-	if err := contactView.Template.ExecuteTemplate(w, contactView.Layout, nil); err != nil {
-		panic(err)
-	}
-}
-
-func signup(w http.ResponseWriter, r *http.Request)  {
-	w.Header().Set("content-Type","text/html")
-	if err := signupView.Template.ExecuteTemplate(w, signupView.Layout,nil);err != nil{
-		panic(err)
-	}
-}
 func main() {
 
-	homeView= view.NewView("bootstrap","view/home.gohtml")
-	contactView = view.NewView("bootstrap","view/contact.gohtml")
-	signupView = view.NewView("bootstrap","view/signup.gohtml")
+	staticC := controller.NewStatic()
+	userC := controller.NewUser()
 
-	template.New(" hahaha")
+
+
 	r := mux.NewRouter()
-	r.HandleFunc("/", home)
-	r.HandleFunc("/contact", contact)
-	r.HandleFunc("/signup", signup)
+	r.Handle("/", staticC.HomeView).Methods("GET")
+	r.Handle("/contact", staticC.ContactView).Methods("GET")
+	r.HandleFunc("/signup", userC.New).Methods("GET")
+	r.HandleFunc("/signup",userC.Create).Methods("POST")
 	http.ListenAndServe(":3000", r)
 
+}
+
+func must(err error) {
+	if err != nil{
+		panic(err)
+	}
 }
